@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.devsuperior.dsmeta.dto.SaleSumaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,21 @@ public class SaleService {
 
 		return repository.searchSaleByNameBetweenDates(name, LocalDate.parse(minDate), LocalDate.parse(maxDate));
 	}
+
+	public List<SaleSumaryDTO> searchSumaryBetweenDates(String minDate, String maxDate){
+
+		if (minDate.isEmpty()){
+			minDate = oneYearsPastFromToday();
+		}
+
+		if (maxDate.isEmpty()){
+			maxDate = String.valueOf(LocalDate.now());
+		}
+
+		return repository.searchSumaryBetweenDates(LocalDate.parse(minDate), LocalDate.parse(maxDate));
+	}
+
+
 
 	private String oneYearsPastFromToday(){
 		LocalDate today = LocalDate.now();

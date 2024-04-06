@@ -1,5 +1,6 @@
 package com.devsuperior.dsmeta.controllers;
 
+import com.devsuperior.dsmeta.dto.SaleSumaryDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,12 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<List<SaleSumaryDTO>> getSummary(@RequestParam(value = "minDate", defaultValue = "") String minDate,
+														  @RequestParam(value = "maxDate", defaultValue = "") String maxDate) {
+
+		List<SaleSumaryDTO> reportList = service.searchSumaryBetweenDates(minDate, maxDate);
+
+		return ResponseEntity.ok(reportList);
+
 	}
 }

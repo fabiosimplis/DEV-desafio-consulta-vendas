@@ -1,6 +1,7 @@
 package com.devsuperior.dsmeta.repositories;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SaleSumaryDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.devsuperior.dsmeta.entities.Sale;
@@ -16,4 +17,11 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             "WHERE UPPER(sa.seller.name) LIKE UPPER(CONCAT('%',:name,'%')) " +
             "AND sa.date BETWEEN :minDate AND :maxDate")
     List<SaleMinDTO> searchSaleByNameBetweenDates(String name, LocalDate minDate, LocalDate maxDate);
+
+    @Query("SELECT new com.devsuperior.dsmeta.dto.SaleSumaryDTO(sa.seller.name, SUM(sa.amount) AS total) " +
+            "FROM Sale sa " +
+            "WHERE date BETWEEN :minDate AND :maxDate " +
+            "GROUP BY  sa.seller.id " +
+            "ORDER BY  sa.seller.name")
+    List<SaleSumaryDTO> searchSumaryBetweenDates(LocalDate minDate, LocalDate maxDate);
 }

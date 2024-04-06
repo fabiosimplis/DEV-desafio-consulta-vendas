@@ -16,12 +16,16 @@ public class SaleMinDTO {
 		this.date = date;
 		this.name = name;
 	}
-	
+
 	public SaleMinDTO(Sale entity) {
 		id = entity.getId();
 		amount = entity.getAmount();
 		date = entity.getDate();
 		name = entity.getSeller().getName();
+	}
+	public SaleMinDTO(Double total, String name) {
+		this.amount = total;
+		this.name = name;
 	}
 
 	public Long getId() {
@@ -40,13 +44,4 @@ public class SaleMinDTO {
 		return name;
 	}
 
-	@Override
-	public String toString() {
-		return "SaleMinDTO{" +
-				"id=" + id +
-				", amount=" + amount +
-				", date=" + date +
-				", name='" + name + '\'' +
-				'}';
-	}
 }

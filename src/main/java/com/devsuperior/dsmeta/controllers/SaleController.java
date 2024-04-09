@@ -30,7 +30,7 @@ public class SaleController {
 			@RequestParam(value = "minDate", defaultValue = "") String minDate,
 			@RequestParam(value = "maxDate", defaultValue = "") String maxDate,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "size", defaultValue = "10") Integer size) {
+			@RequestParam(value = "size", defaultValue = "2") Integer size) {
 
 		PageRequest pageRequest = PageRequest.of(page,size);
 

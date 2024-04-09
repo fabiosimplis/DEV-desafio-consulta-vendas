@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class SaleService {
@@ -26,7 +27,7 @@ public class SaleService {
 		return new SaleMinDTO(entity);
 	}
 
-	//public List<SaleMinDTO> searchSaleByNameBetweenDates(String name, String minDate, String maxDate){
+	@Transactional(readOnly = true)
 	public Page<SaleMinDTO> searchSaleByNameBetweenDates(String name, String minDate, String maxDate, PageRequest pageRequest){
 
 		if (minDate.isEmpty()){
@@ -37,11 +38,10 @@ public class SaleService {
 			maxDate = String.valueOf(LocalDate.now());
 		}
 
-		Page<Sale> page = repository.findAll(pageRequest);
-		List<Sale> listOfSales = page.stream().collect(Collectors.toList());
-		repository.searchSaleByNameBetweenDates(name, LocalDate.parse(minDate), LocalDate.parse(maxDate), listOfSales);
+		Page<Sale> page = repository.searchSaleByNameBetweenDates(name, LocalDate.parse(minDate), LocalDate.parse(maxDate), pageRequest);
 
-		return page.map(SaleMinDTO::new);
+		return page.map(s -> new SaleMinDTO(s));
+
 	}
 
 	public List<SaleSumaryDTO> searchSumaryBetweenDates(String minDate, String maxDate){
